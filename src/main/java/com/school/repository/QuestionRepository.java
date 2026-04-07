@@ -6,6 +6,8 @@ import com.school.exception.QuizException;
 import com.school.model.Question;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collections;
@@ -24,10 +26,11 @@ public class QuestionRepository {
 
     public List<Question> loadAll() {
         try {
-            Question[] questions = mapper.readValue(filePath.toFile(), Question[].class);
+            InputStream is = getInputStream();
+            Question[] questions = mapper.readValue(is, Question[].class);
             return Collections.unmodifiableList(Arrays.asList(questions));
         } catch (IOException e) {
-            throw new QuizException("Failed to load questions from: " + filePath, e);
+            throw new QuizException("Failed to load questions: " + e.getMessage(), e);
         }
     }
 
@@ -35,5 +38,18 @@ public class QuestionRepository {
         return loadAll().stream()
                 .filter(q -> q.category().equalsIgnoreCase(category))
                 .toList();
+    }
+
+    private InputStream getInputStream() throws IOException {
+        // Try file system first (local dev), fall back to classpath (Railway/jar)
+        if (Files.exists(filePath)) {
+            return Files.newInputStream(filePath);
+        }
+        InputStream is = getClass().getClassLoader()
+                .getResourceAsStream("questions.json");
+        if (is == null) {
+            throw new QuizException("questions.json not found on filesystem or classpath");
+        }
+        return is;
     }
 }
