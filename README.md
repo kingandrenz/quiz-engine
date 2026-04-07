@@ -1,224 +1,84 @@
-# Quiz Engine
+# Quiz Engine — Java REST API
 
-A Java 17 console and REST API application that allows learners to prepare for tests with persistent scoring and leaderboards.
+A console and REST API quiz application built with Java 17 and Spring Boot.
+Learners can attempt quizzes by category, receive instant scoring, and track
+performance on a persistent leaderboard.
+
+## Live API
+Base URL: https://flexteckquiz-engine.up.railway.app
+
+| Endpoint | Method | Description |
+|---|---|---|
+| `/api/quiz/start` | GET | Fetch questions (optional: `?category=java&limit=5`) |
+| `/api/quiz/submit` | POST | Submit answers and receive score |
+| `/api/quiz/categories` | GET | List all available categories |
+| `/api/leaderboard` | GET | View top scores (optional: `?top=5`) |
+| `/api/leaderboard/category?name=java` | GET | Filter leaderboard by category |
+
+## Presentation Slides
+[View Slides on Canva](YOUR_CANVA_LINK_HERE)
+
+## Screenshots
+See the [/Screenshots](./Screenshots) folder for API responses and project state.
+
+## Data Model
+
+### Entities and Relationships
+
+**Question** — the core entity. Each question belongs to one category and has
+exactly one Answer. The Answer is a sealed type: either `MultipleChoice`
+(containing a list of options and a correct index) or `TrueFalse` (containing
+a boolean correct value).
+
+**QuizResult** — created at the end of each session. Captures the player name,
+score, total questions, category, and timestamp. One player can have many
+QuizResults over time.
+
+**LeaderboardEntry** — derived from a QuizResult via `LeaderboardEntry.from(result)`.
+Stored persistently in JSON. Entries are ranked by percentage descending, with
+ties broken by most recent completion time.
+
+## Data Model Diagram
+![Data Model](./Screenshots/data-model-diagram.png)
+
+## Architecture
+The project is structured in four layers:
+
+- **Domain** — Java Records: `Question`, `Answer`, `QuizResult`, `LeaderboardEntry`
+- **Repository** — JSON persistence via Jackson: `QuestionRepository`, `LeaderboardRepository`
+- **Service** — Business logic: `QuizService`, `LeaderboardService`
+- **Presentation** — REST API (Spring Boot) and Console CLI running side by side
 
 ## Tech Stack
+| Layer | Technology |
+|---|---|
+| Language | Java 17 |
+| Framework | Spring Boot 3.2 |
+| Serialization | Jackson |
+| Testing | JUnit 5, Mockito, MockMvc |
+| Build | Maven |
+| Hosting | Railway |
+| Version Control | GitHub |
 
-- **Language:** Java 17 (Records, Sealed Classes)
-- **Framework:** Spring Boot 3.2
-- **Build Tool:** Maven
-- **Storage:** JSON files (Jackson)
-- **Testing:** JUnit 5, Mockito, MockMvc
+## Running Locally
 
-## Project Structure
-src/
-└── main/java/com/school/
-├── api/                        # REST layer
-│   ├── QuizController.java
-│   ├── LeaderboardController.java
-│   └── dto/
-│       ├── ApiResponse.java
-│       ├── QuestionView.java
-│       ├── StartQuizRequest.java
-│       └── SubmitAnswersRequest.java
-├── cli/                        # Console layer
-│   ├── MenuDisplay.java
-│   └── QuizRunner.java
-├── config/
-│   └── AppConfig.java
-├── exception/
-│   └── QuizException.java
-├── model/                      # Domain records
-│   ├── Answer.java
-│   ├── Question.java
-│   ├── QuizResult.java
-│   └── LeaderboardEntry.java
-├── repository/                 # Persistence layer
-│   ├── QuestionRepository.java
-│   └── LeaderboardRepository.java
-├── service/                    # Business logic
-│   ├── QuizService.java
-│   └── LeaderboardService.java
-└── App.java
-
-## Prerequisites
-
-- Java 17+
-- Maven 3.8+
-
-## Getting Started
-
-### Clone the repository
-```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
-cd YOUR_REPO
-```
-
-### Run the REST API
+**As a REST API:**
 ```bash
 mvn spring-boot:run
 ```
 
-The API will start on `http://localhost:8080`.
-
-### Run the CLI
+**As a console app:**
 ```bash
 mvn spring-boot:run -Dspring-boot.run.arguments=--cli
 ```
 
-### Run Tests
+**Run tests:**
 ```bash
 mvn test
 ```
 
-## REST API Endpoints
+## Test Coverage
+43 tests across all layers — domain, repository, service, and API controllers.
 
-### Quiz
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/quiz/start` | Start a new quiz |
-| GET | `/api/quiz/start?category=java&limit=5` | Start a quiz by category and limit |
-| GET | `/api/quiz/categories` | Get all available categories |
-| POST | `/api/quiz/submit` | Submit answers and get score |
-
-### Leaderboard
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/leaderboard` | Get top 10 scores |
-| GET | `/api/leaderboard?top=5` | Get top N scores |
-| GET | `/api/leaderboard/category?name=java` | Get top scores by category |
-
-## Example API Usage
-
-### Start a quiz
-```bash
-curl http://localhost:8080/api/quiz/start?category=java&limit=2
-```
-
-Response:
-```json
-{
-  "success": true,
-  "message": "Quiz ready",
-  "data": [
-    {
-      "id": "q1",
-      "text": "What is the default value of an int in Java?",
-      "category": "java",
-      "answerType": "multiple_choice",
-      "options": ["0", "1", "null", "-1"]
-    },
-    {
-      "id": "q2",
-      "text": "Java is a compiled language.",
-      "category": "java",
-      "answerType": "true_false",
-      "options": null
-    }
-  ]
-}
-```
-
-### Submit answers
-```bash
-curl -X POST http://localhost:8080/api/quiz/submit \
-  -H "Content-Type: application/json" \
-  -d '{
-    "playerName": "Alice",
-    "category": "java",
-    "questionIds": ["q1", "q2"],
-    "answers": ["0", "true"]
-  }'
-```
-
-Response:
-```json
-{
-  "success": true,
-  "message": "Quiz submitted successfully",
-  "data": {
-    "playerName": "Alice",
-    "score": 2,
-    "totalQuestions": 2,
-    "percentage": 100.0,
-    "category": "java"
-  }
-}
-```
-
-### Get leaderboard
-```bash
-curl http://localhost:8080/api/leaderboard
-```
-
-Response:
-```json
-{
-  "success": true,
-  "message": "OK",
-  "data": [
-    {
-      "playerName": "Alice",
-      "percentage": 100.0,
-      "score": 2,
-      "totalQuestions": 2,
-      "category": "java",
-      "completedAt": "2026-04-07T09:00:00Z"
-    }
-  ]
-}
-```
-
-## Adding Questions
-
-Edit `src/main/resources/questions.json`. Two answer types are supported:
-
-### Multiple choice
-```json
-{
-  "id": "q5",
-  "text": "Which of these is not a Java primitive?",
-  "category": "java",
-  "answer": {
-    "type": "multiple_choice",
-    "options": ["int", "boolean", "String", "char"],
-    "correctIndex": 2
-  }
-}
-```
-
-### True / False
-```json
-{
-  "id": "q6",
-  "text": "Java supports multiple inheritance through classes.",
-  "category": "java",
-  "answer": {
-    "type": "true_false",
-    "correctAnswer": false
-  }
-}
-```
-
-## Environment Variables
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `PORT` | `8080` | Server port |
-| `QUESTIONS_PATH` | `src/main/resources/questions.json` | Path to questions file |
-| `LEADERBOARD_PATH` | `leaderboard.json` | Path to leaderboard file |
-
-## Deployment
-
-This project is configured for deployment on [Railway](https://railway.app).
-
-1. Push the project to GitHub
-2. Create a new project on Railway and connect your repository
-3. Railway auto-detects Maven and builds the project
-4. Generate a public domain under **Settings → Networking**
-
-## Architecture
-
-The project follows a strict layered architecture where dependencies only flow downward:
+## Author
+Anthony Kanu (Flexteck)
