@@ -1,0 +1,40 @@
+[
+  {
+    "id": "q1",
+    "text": "What is the default value of an int in Java?",
+    "category": "java",
+    "answer": {
+      "type": "multiple_choice",
+      "options": ["0", "1", "null", "-1"],
+      "correctIndex": 0
+    }
+  },
+  {
+    "id": "q2",
+    "text": "Java is a compiled language.",
+    "category": "java",
+    "answer": {
+      "type": "true_false",
+      "correctAnswer": true
+    }
+  },
+  {
+    "id": "q3",
+    "text": "Which keyword is used to inherit a class in Java?",
+    "category": "java",
+    "answer": {
+      "type": "multiple_choice",
+      "options": ["implements", "extends", "inherits", "super"],
+      "correctIndex": 1
+    }
+  },
+  {
+    "id": "q4",
+    "text": "A Java interface can have a constructor.",
+    "category": "java",
+    "answer": {
+      "type": "true_false",
+      "correctAnswer": false
+    }
+  }
+]
