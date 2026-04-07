@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 @Configuration
@@ -21,7 +22,9 @@ public class AppConfig {
 
     @Bean
     public QuestionRepository questionRepository() {
-        return new QuestionRepository(Path.of(questionsPath));
+        Path path = Path.of(questionsPath);
+        return new QuestionRepository(
+                Files.exists(path) ? path : null);
     }
 
     @Bean

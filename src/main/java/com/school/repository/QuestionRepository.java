@@ -26,8 +26,7 @@ public class QuestionRepository {
 
     public List<Question> loadAll() {
         try {
-            InputStream is = getInputStream();
-            Question[] questions = mapper.readValue(is, Question[].class);
+            Question[] questions = mapper.readValue(getInputStream(), Question[].class);
             return Collections.unmodifiableList(Arrays.asList(questions));
         } catch (IOException e) {
             throw new QuizException("Failed to load questions: " + e.getMessage(), e);
@@ -41,8 +40,8 @@ public class QuestionRepository {
     }
 
     private InputStream getInputStream() throws IOException {
-        // Try file system first (local dev), fall back to classpath (Railway/jar)
-        if (Files.exists(filePath)) {
+        // Use filesystem if path exists, otherwise fall back to classpath
+        if (filePath != null && Files.exists(filePath)) {
             return Files.newInputStream(filePath);
         }
         InputStream is = getClass().getClassLoader()
