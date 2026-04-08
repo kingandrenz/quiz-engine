@@ -4,6 +4,11 @@ A console and REST API quiz application built with Java 17 and Spring Boot.
 Learners can attempt quizzes by category, receive instant scoring, and track
 performance on a persistent leaderboard.
 
+## Links
+- Portfolio: https://kingandrenz.github.io/quiz-engine
+- Live API: https://flexteckquiz-engine.up.railway.app
+- Slides: https://canva.link/10vno837a2z9mtv
+
 ## Live API
 Base URL: https://flexteckquiz-engine.up.railway.app
 
