@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Name — Java Developer</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0f0f0f;
+      color: #e5e5e5;
+      line-height: 1.7;
+    }
+
+    header {
+      padding: 80px 40px 60px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    header h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      color: #888;
+      max-width: 520px;
+    }
+
+    .badge {
+      display: inline-block;
+      margin-top: 24px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      background: #1a1a2e;
+      color: #7f77dd;
+      border: 1px solid #3c3489;
+      margin-right: 8px;
+    }
+
+    section {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 40px 80px;
+    }
+
+    section h2 {
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #555;
+      margin-bottom: 32px;
+    }
+
+    .project-card {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 32px;
+      margin-bottom: 24px;
+      transition: border-color 0.2s;
+    }
+
+    .project-card:hover {
+      border-color: #3c3489;
+    }
+
+    .project-card h3 {
+      font-size: 1.3rem;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .project-card p {
+      color: #888;
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .tag {
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      background: #111;
+      color: #aaa;
+      border: 1px solid #2a2a2a;
+    }
+
+    .links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .links a {
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .links a:hover { opacity: 0.8; }
+
+    .btn-primary {
+      background: #534AB7;
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: #aaa;
+      border: 1px solid #2a2a2a;
+    }
+
+    .stats {
+      display: flex;
+      gap: 32px;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #2a2a2a;
+    }
+
+    .stat span {
+      display: block;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #7f77dd;
+    }
+
+    .stat p {
+      font-size: 0.8rem;
+      color: #555;
+      margin: 0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px;
+      color: #333;
+      font-size: 0.85rem;
+      border-top: 1px solid #1a1a1a;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Your Name</h1>
+  <p>Java Developer building backend systems and REST APIs.</p>
+  <div>
+    <span class="badge">Java 17</span>
+    <span class="badge">Spring Boot</span>
+    <span class="badge">REST APIs</span>
+    <span class="badge">JUnit 5</span>
+  </div>
+</header>
+
+<section>
+  <h2>Projects</h2>
+
+  <div class="project-card">
+    <h3>Quiz Engine</h3>
+    <p>
+      A REST API and console application for learners to prepare for tests.
+      Features category filtering, answer hiding, persistent leaderboards,
+      and 43 automated tests across all layers.
+    </p>
+    <div class="tags">
+      <span class="tag">Java 17</span>
+      <span class="tag">Spring Boot 3.2</span>
+      <span class="tag">Jackson</span>
+      <span class="tag">JUnit 5</span>
+      <span class="tag">Mockito</span>
+      <span class="tag">MockMvc</span>
+      <span class="tag">Railway</span>
+      <span class="tag">Maven</span>
+    </div>
+    <div class="links">
+      <a href="https://flexteckquiz-engine.up.railway.app/api/quiz/start"
+         class="btn-primary" target="_blank">Live API</a>
+      <a href="https://github.com/kingandrenz/quiz-engine/tree/main"
+         class="btn-secondary" target="_blank">GitHub</a>
+      <a href="https://canva.link/10vno837a2z9mtv"
+         class="btn-secondary" target="_blank">Slides</a>
+    </div>
+    <div class="stats">
+      <div class="stat">
+        <span>43</span>
+        <p>Tests passing</p>
+      </div>
+      <div class="stat">
+        <span>5</span>
+        <p>API endpoints</p>
+      </div>
+      <div class="stat">
+        <span>4</span>
+        <p>Architecture layers</p>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<footer>
+  Anthony Kanu (Flexteck) &mdash; Java Developer
+</footer>
+
+</body>
+</html>
