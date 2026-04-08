@@ -16,7 +16,7 @@ Base URL: https://flexteckquiz-engine.up.railway.app
 | `/api/leaderboard/category?name=java` | GET | Filter leaderboard by category |
 
 ## Presentation Slides
-[View Slides on Canva](YOUR_CANVA_LINK_HERE)
+[View Slides on Canva](https://canva.link/10vno837a2z9mtv)
 
 ## Screenshots
 See the [/Screenshots](./Screenshots) folder for API responses and project state.
