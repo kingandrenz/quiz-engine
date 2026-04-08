@@ -86,4 +86,16 @@ public class QuizController {
                 .toList();
         return ResponseEntity.ok(ApiResponse.ok(categories));
     }
+
+    // GET /
+    @GetMapping("/")
+    public ResponseEntity<ApiResponse<Map<String, String>>> welcome() {
+        Map<String, String> endpoints = Map.of(
+                "start quiz", "/api/quiz/start?category=java&limit=5",
+                "all categories", "/api/quiz/categories",
+                "submit answers", "/api/quiz/submit (POST)",
+                "leaderboard", "/api/leaderboard",
+                "leaderboard by category", "/api/leaderboard/category?name=java");
+        return ResponseEntity.ok(ApiResponse.ok("Quiz Engine API is running", endpoints));
+    }
 }
